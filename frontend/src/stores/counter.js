@@ -7,7 +7,9 @@ export const useCounterStore = defineStore('counter', {
     state(){
         return {
           server: 'http://localhost:3000',
-          isLogin: false          
+          isLogin: false,
+          products: [],
+          orders: []
         }
     },
     actions: {
@@ -50,6 +52,55 @@ export const useCounterStore = defineStore('counter', {
               duration: 3000                
             }).showToast();
             this.router.replace({name: 'login'})
-          }
+        },
+
+        async fetchProduct(){
+            const { data } = await axios({
+                method: "get",
+                url: `${this.server}/products/get-products`,
+            });            
+            this.products = data;
+        },
+
+        async fetchOrder(){
+            const { data } = await axios({
+                method: "get",
+                url: `${this.server}/orders/list`
+            })       
+            this.orders = data
+        },
+
+        async createOrder(id){
+            // console.log(id, "<<<< coming from COUNTER STORE")
+            try {
+                const {data}= await axios({
+                    method: "post",
+                    url: `${this.server}/orders/${id}`,
+                })
+                const existingOrder = this.orders.find(ord => ord.id === data.id)
+                if (existingOrder) {
+                    existingOrder.amount = data.amount
+                    existingOrder.total_price = data.total_price
+                } else {
+                    this.orders.push(data)
+                }                
+                this.products = this.products.map(prod => prod.id === id ? { ...prod, selected: false } : prod)
+                this.router.push("/");
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        
+        async clearCart(){
+            try {
+                const {data} = await axios({
+                    method: 'delete',
+                    url: `${this.server}/orders/clear-cart`
+                })
+                this.orders = []
+            } catch (err) {
+                console.log(err)
+            }
+        } 
     }
 })
