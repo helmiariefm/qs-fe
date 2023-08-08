@@ -1,6 +1,14 @@
 <script>
+  import Navbar from './components/Navbar.vue'
+
+  export default{
+    components:{
+      Navbar
+    }    
+  }
 </script>
 
 <template>
-  <h1>QShare</h1>
+  <Navbar/>
+  <RouterView/>
 </template>
