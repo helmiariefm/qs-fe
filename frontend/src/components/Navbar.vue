@@ -26,9 +26,9 @@
     <div v-if="isLogin" class="w-full text-white">
         <div class="bg-primary flex px-20 py-2 justify-center md:justify-between">            
             <RouterLink to="/" class="self-center font-bold text-xl">Q-Commerce</RouterLink>
-            <div class="flex px-14 py-2 justify-center md:justify-start text-black font-semibold">
+            <div class="flex px-14 py-2 justify-center md:justify-start font-semibold">
                 <RouterLink to="/" active-class="active" class="mx-7">Products</RouterLink>
-                <button @click="handleLogout" class="text-white mx-7">Logout</button>
+                <button @click="handleLogout">Logout</button>
             </div>
         </div>
     </div>

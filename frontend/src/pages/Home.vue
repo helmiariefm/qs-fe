@@ -2,34 +2,36 @@
   import { mapActions, mapWritableState } from 'pinia';
   import { useCounterStore } from '../stores/counter';  
   import ProductCard from '../components/ProductCard.vue';
+    import { RouterLink } from 'vue-router';
 
   export default{
-      components: {          
-          ProductCard
-      },
-      computed: {
-        ...mapWritableState(useCounterStore, ['products', 'orders']),        
-      },
-      methods: {
-        ...mapActions(useCounterStore, ['fetchProduct', 'fetchOrder', 'createOrder', 'clearCart']),
-        handleOrder(id){
-          this.createOrder(id)
+        components: {
+            ProductCard,
+            RouterLink
         },
-        handleClearCart(){
-          this.clearCart()
-        }       
-      },
-      mounted(){
-        this.fetchProduct()
-        this.fetchOrder()
-      }
+        computed: {
+            ...mapWritableState(useCounterStore, ['products', 'orders']),        
+        },
+        methods: {
+            ...mapActions(useCounterStore, ['fetchProduct', 'fetchOrder', 'createOrder', 'clearCart']),
+            handleOrder(id){
+            this.createOrder(id)
+            },
+            handleClearCart(){
+            this.clearCart()
+            }       
+        },
+        mounted(){
+            this.fetchProduct()
+            this.fetchOrder()
+        }
   }
 
 
 </script>
 
 <template>
-    <div class="md:px-20 px-5 flex flex-col-reverse md:flex-row w-full">      
+    <div class="md:px-20 px-5 pt-9 flex flex-col-reverse md:flex-row w-full">
       <div class="md:w-4/6 grid grid-cols-1 md:grid-cols-3">
         <ProductCard v-for="prodProp in products" :key="prodProp.id" :prodProp="prodProp" v-on:click="$event => handleOrder(prodProp.id)"/>
       </div>
@@ -57,7 +59,7 @@
             </div>
   
             <div class="mx-9 my-3">
-              <button class="text-white font-semibold bg-sky-500 hover:bg-sky-400 rounded-sm p-2 w-full">See Details</button>              
+              <RouterLink to="/order-detail" class="text-white font-semibold bg-sky-500 hover:bg-sky-400 rounded-sm p-2 w-full block">See Details</RouterLink>
             </div>
           </div>          
 
